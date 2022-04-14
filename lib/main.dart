@@ -33,14 +33,25 @@ class RandomWords extends StatefulWidget {
 class _RandomWordsState extends State<RandomWords> {
   // for saving suggested word pairing
   final _suggestions = <WordPair>[];
+  // The set stores word pairing that the user favorited
+  // Set is preferred to List because a properly implemented Set doesn't allow duplicate entries
+  final _saved = <WordPair>{};
   // for making the font size larger
   final _biggerFont = const TextStyle(fontSize: 18);
 
   Widget _buildRow(WordPair pair) {
+    // alreadySaved checks to ensure that a word pairing has not already been added to favorites
+    final alreadySaved = _saved.contains(pair);
     return ListTile(
       title: Text(
         pair.asPascalCase,
         style: _biggerFont,
+      ),
+      // add heart-shaped icons after the text
+      trailing: Icon(
+        alreadySaved ? Icons.favorite : Icons.favorite_border,
+        color: alreadySaved ? Colors.red : null,
+        semanticLabel: alreadySaved ? 'Remove from saved' : 'Save',
       ),
     );
   }
